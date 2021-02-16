@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Oadodes'), 'url' => 
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="oadode-view">
+<div id="print" class="oadode-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -28,6 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
+        <?= Html::button(Yii::t('app', 'Print'), ['class' => 'btn btn-primary', 'onclick' =>'printContent("print")']) ?>
     </p>
 
     <?= DetailView::widget([
@@ -59,7 +60,29 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
-    
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <?= Yii::t('app', 'Description of the controlled goods the applicant be required to examine, possess or transfer (Refer to the Export Control List (ECL))'); ?>
+        </div>
+        <div class="panel-body">
+            <table class="table table-striped table-bordered detail-view">
+                <thead>
+                    <th><?= Yii::t('app', 'Description of Controlled goods');?></th>
+                    <th><?= Yii::t('app', 'ECL Group No.'); ?></th>
+                    <th><?= Yii::t('app', 'ECL Item No.'); ?></th>
+                </thead>
+                <tbody>
+                    <?php foreach($model->descriptionOfGoods as $desc_of_goods): ?>
+                        <tr>
+                            <td><?= $desc_of_goods->description; ?></td>
+                            <td><?= $desc_of_goods->ecl_group; ?></td>
+                            <td><?= $desc_of_goods->ecl_item; ?></td>
+                        </tr>
+                    <?php endforeach ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <script language="javascript">
