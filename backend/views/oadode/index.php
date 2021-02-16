@@ -6,6 +6,10 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
+/**
+   * File generated with the GII tool
+ */
+
 $this->title = Yii::t('app', 'Oadodes');
 $this->params['breadcrumbs'][] = $this->title;
 ?>

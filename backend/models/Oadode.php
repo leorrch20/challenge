@@ -5,6 +5,10 @@ namespace backend\models;
 use Yii;
 
 /**
+   * File generated with the GII tool
+ */
+
+/**
  * This is the model class for table "oadode".
  *
  * @property int $id
@@ -42,6 +46,8 @@ class Oadode extends \yii\db\ActiveRecord
         return [
             [['application_id', 'customer_id', 'user_id', 'application_type', 'lang'], 'integer'],
             [['legal_name', 'business_name', 'business_address', 'business_mailing_address', 'business_phone', 'business_fax', 'business_email', 'business_title'], 'string', 'max' => 255],
+            [['legal_name', 'business_name', 'business_address', 'business_mailing_address', 'business_phone', 'business_email', 'application_type', 'business_title', 'lang'], 'required'],
+            [['business_email'], 'email'],
         ];
     }
 
@@ -64,7 +70,7 @@ class Oadode extends \yii\db\ActiveRecord
             'business_email' => Yii::t('app', 'Business Email'),
             'application_type' => Yii::t('app', 'Application Type'),
             'business_title' => Yii::t('app', 'Business Title'),
-            'lang' => Yii::t('app', 'Lang'),
+            'lang' => Yii::t('app', 'Languaje'),
         ];
     }
 
@@ -75,6 +81,6 @@ class Oadode extends \yii\db\ActiveRecord
      */
     public function getDescriptionOfGoods()
     {
-        return $this->hasMany(DescriptionOfGoods::className(), ['oadote_id' => 'id']);
+        return $this->hasMany(DescriptionOfGoods::className(), ['oadode_id' => 'id']);
     }
 }

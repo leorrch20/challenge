@@ -3,6 +3,10 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
+/**
+   * File generated with the GII tool
+ */
+
 /* @var $this yii\web\View */
 /* @var $model app\models\DescriptionOfGoods */
 

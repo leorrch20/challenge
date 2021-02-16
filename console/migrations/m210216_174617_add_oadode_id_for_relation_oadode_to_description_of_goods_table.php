@@ -12,13 +12,13 @@ class m210216_174617_add_oadode_id_for_relation_oadode_to_description_of_goods_t
      */
     public function safeUp()
     {
-        $this->addColumn('description_of_goods', 'oadote_id', $this->integer()->after('user_id'));
+        $this->addColumn('description_of_goods', 'oadode_id', $this->integer()->after('user_id'));
 
         // add foreign key for table `oadode`
         $this->addForeignKey(
-            'fk-description_of_goods-oadote_id',
+            'fk-description_of_goods-oadode_id',
             'description_of_goods',
-            'oadote_id',
+            'oadode_id',
             'oadode',
             'id',
             'CASCADE'

@@ -5,13 +5,17 @@ namespace backend\models;
 use Yii;
 
 /**
+   * File generated with the GII tool
+ */
+
+/**
  * This is the model class for table "description_of_goods".
  *
  * @property int $id
  * @property int|null $application_id
  * @property int|null $customer_id
  * @property int|null $user_id
- * @property int|null $oadote_id
+ * @property int|null $oadode_id
  * @property string|null $description
  * @property string|null $ecl_group
  * @property string|null $ecl_item
@@ -34,9 +38,12 @@ class DescriptionOfGoods extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['application_id', 'customer_id', 'user_id', 'oadote_id'], 'integer'],
+            [['application_id', 'customer_id', 'user_id', 'oadode_id'], 'integer'],
+            [['description', 'ecl_group', 'ecl_item'], 'required'],
             [['description', 'ecl_group', 'ecl_item'], 'string', 'max' => 255],
-            [['oadote_id'], 'exist', 'skipOnError' => true, 'targetClass' => Oadode::className(), 'targetAttribute' => ['oadote_id' => 'id']],
+            [['description'],'match', 'pattern' => '/^[a-zA-Z]+$/', 'message' => 'Only Alphabet'],
+            [['ecl_group', 'ecl_item'],'match', 'pattern' => '/^[1-9]+$/', 'message' => 'Only numbers 1-9'],
+            [['oadode_id'], 'exist', 'skipOnError' => true, 'targetClass' => Oadode::className(), 'targetAttribute' => ['oadode_id' => 'id']],
         ];
     }
 
@@ -50,7 +57,7 @@ class DescriptionOfGoods extends \yii\db\ActiveRecord
             'application_id' => Yii::t('app', 'Application ID'),
             'customer_id' => Yii::t('app', 'Customer ID'),
             'user_id' => Yii::t('app', 'User ID'),
-            'oadote_id' => Yii::t('app', 'Oadote ID'),
+            'oadode_id' => Yii::t('app', 'Oadode ID'),
             'description' => Yii::t('app', 'Description'),
             'ecl_group' => Yii::t('app', 'Ecl Group'),
             'ecl_item' => Yii::t('app', 'Ecl Item'),
@@ -62,8 +69,8 @@ class DescriptionOfGoods extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getOadote()
+    public function getOadode()
     {
-        return $this->hasOne(Oadode::className(), ['id' => 'oadote_id']);
+        return $this->hasOne(Oadode::className(), ['id' => 'oadode_id']);
     }
 }

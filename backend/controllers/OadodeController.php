@@ -4,10 +4,16 @@ namespace backend\controllers;
 
 use Yii;
 use backend\models\Oadode;
+use backend\models\DescriptionOfGoods;
+use backend\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+
+/**
+   * File generated with the GII tool
+ */
 
 /**
  * OadodeController implements the CRUD actions for Oadode model.
@@ -65,13 +71,57 @@ class OadodeController extends Controller
     public function actionCreate()
     {
         $model = new Oadode();
+        $modelsDescriptionOfGoods = [new DescriptionOfGoods()];
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+
+            $modelsDescriptionOfGoods = Model::createMultiple(DescriptionOfGoods::classname());
+            Model::loadMultiple($modelsDescriptionOfGoods, Yii::$app->request->post());
+
+            // ajax validation
+            if (Yii::$app->request->isAjax) {
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return ArrayHelper::merge(
+                    ActiveForm::validateMultiple($modelsDescriptionOfGoods),
+                    ActiveForm::validate($model)
+                );
+            }
+            $model->business_title = '';
+            if(is_array(Yii::$app->request->post('business_title'))){
+                foreach(Yii::$app->request->post('business_title') as $i => $item){
+                    $model->business_title .= $item .', ';
+                }
+            }
+
+            // validate all models
+            $valid = $model->validate();
+            $valid = Model::validateMultiple($modelsDescriptionOfGoods) && $valid;
+            
+            if ($valid) {
+                $transaction = \Yii::$app->db->beginTransaction();
+                try {
+                    if ($flag = $model->save(false)) {
+                        foreach ($modelsDescriptionOfGoods as $modelDescriptionOfGoods) {
+                            $modelDescriptionOfGoods->oadode_id = $model->id;
+                            if (! ($flag = $modelDescriptionOfGoods->save(false))) {
+                                $transaction->rollBack();
+                                break;
+                            }
+                        }
+                    }
+                    if ($flag) {
+                        $transaction->commit();
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    }
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                }
+            }
         }
 
         return $this->render('create', [
-            'model' => $model,
+            'model' => $model, 
+            'modelsDescriptionOfGoods' => (empty($modelsDescriptionOfGoods)) ? [new DescriptionOfGoods] : $modelsDescriptionOfGoods
         ]);
     }
 
@@ -85,13 +135,56 @@ class OadodeController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $modelsDescriptionOfGoods = $model->description_of_goods;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+
+            $oldIDs = ArrayHelper::map($modelsDescriptionOfGoods, 'id', 'id');
+            $modelsDescriptionOfGoods = Model::createMultiple(DescriptionOfGoods::classname(), $modelsDescriptionOfGoods);
+            Model::loadMultiple($modelsDescriptionOfGoods, Yii::$app->request->post());
+            $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($modelsDescriptionOfGoods, 'id', 'id')));
+
+            // ajax validation
+            if (Yii::$app->request->isAjax) {
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return ArrayHelper::merge(
+                    ActiveForm::validateMultiple($modelsDescriptionOfGoods),
+                    ActiveForm::validate($model)
+                );
+            }
+
+            // validate all models
+            $valid = $model->validate();
+            $valid = Model::validateMultiple($modelsDescriptionOfGoods) && $valid;
+
+            if ($valid) {
+                $transaction = \Yii::$app->db->beginTransaction();
+                try {
+                    if ($flag = $model->save(false)) {
+                        if (! empty($deletedIDs)) {
+                            DescriptionOfGoods::deleteAll(['id' => $deletedIDs]);
+                        }
+                        foreach ($modelsDescriptionOfGoods as $modelDOG) {
+                            $modelDOG->oadode_id = $model->id;
+                            if (! ($flag = $modelDOG->save(false))) {
+                                $transaction->rollBack();
+                                break;
+                            }
+                        }
+                    }
+                    if ($flag) {
+                        $transaction->commit();
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    }
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                }
+            }
         }
 
         return $this->render('update', [
             'model' => $model,
+            'modelsDescriptionOfGoods' => (empty($modelsDescriptionOfGoods)) ? [new DescriptionOfGoods] : $modelsDescriptionOfGoods
         ]);
     }
 

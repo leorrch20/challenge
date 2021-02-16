@@ -2,6 +2,10 @@
 
 use yii\helpers\Html;
 
+/**
+   * File generated with the GII tool
+ */
+
 /* @var $this yii\web\View */
 /* @var $model app\models\DescriptionOfGoods */
 

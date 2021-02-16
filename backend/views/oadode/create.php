@@ -5,6 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Oadode */
 
+/**
+   * File generated with the GII tool
+ */
+
 $this->title = Yii::t('app', 'Create Oadode');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Oadodes'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -14,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
-        'model' => $model,
+        'model' => $model, 'modelsDescriptionOfGoods' => $modelsDescriptionOfGoods
     ]) ?>
 
 </div>

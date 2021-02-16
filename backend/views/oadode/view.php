@@ -6,6 +6,10 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Oadode */
 
+/**
+   * File generated with the GII tool
+ */
+
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Oadodes'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -40,10 +44,31 @@ $this->params['breadcrumbs'][] = $this->title;
             'business_phone',
             'business_fax',
             'business_email:email',
-            'application_type',
             'business_title',
             'lang',
+            [
+                'label'  => Yii::t('app', 'Aplication Type'),
+                'value'  => $model->application_type == 1 ? 'Re-Assesment' : 'New',
+            ],
+            'business_title',
+            'lang',
+            [
+                'label'  => Yii::t('app', 'Language'),
+                'value'  => $model->lang == 1 ? 'English' : 'French',
+            ],
         ],
     ]) ?>
 
+    
 </div>
+
+<script language="javascript">
+    function printContent(el)
+    {
+        var restorepage = document.body.innerHTML;
+        var printcontent = document.getElementById(el).innerHTML;
+        document.body.innerHTML = printcontent;
+        window.print();
+        document.body.innerHTML = restorepage;
+    }
+</script>

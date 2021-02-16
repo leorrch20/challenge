@@ -10,6 +10,10 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
+   * File generated with the GII tool
+ */
+
+/**
  * DescriptionOfGoodsController implements the CRUD actions for DescriptionOfGoods model.
  */
 class DescriptionOfGoodsController extends Controller
